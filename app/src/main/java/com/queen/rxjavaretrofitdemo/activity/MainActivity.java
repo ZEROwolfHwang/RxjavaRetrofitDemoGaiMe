@@ -1,15 +1,16 @@
 package com.queen.rxjavaretrofitdemo.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.queen.rxjavaretrofitdemo.R;
-import com.queen.rxjavaretrofitdemo.subscribers.ProgressSubscriber;
-import com.queen.rxjavaretrofitdemo.subscribers.SubscriberOnNextListener;
 import com.queen.rxjavaretrofitdemo.entity.Subject;
 import com.queen.rxjavaretrofitdemo.http.HttpMethods;
+import com.queen.rxjavaretrofitdemo.subscribers.ProgressSubscriber;
+import com.queen.rxjavaretrofitdemo.subscribers.SubscriberOnNextListener;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SubscriberOnNextListener<List<Subject>>{
 
     @Bind(R.id.click_me_BN)
     Button clickMeBN;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 resultTV.setText(subjects.toString());
             }
         };
+
     }
 
     @Override
@@ -60,5 +62,13 @@ public class MainActivity extends AppCompatActivity {
     //进行网络请求
     private void getMovie(){
         HttpMethods.getInstance().getTopMovie(new ProgressSubscriber(getTopMovieOnNext, MainActivity.this), 0, 10);
+    }
+
+
+    @Override
+    public void onNext(List<Subject> subjects) {
+        resultTV.setText(subjects.toString());
+        resultTV.setTextColor(Color.BLUE);
+
     }
 }
